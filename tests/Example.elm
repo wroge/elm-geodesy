@@ -11,7 +11,7 @@ geographicToWebMercator =
         (\_ ->
             Expect.equal
                 ( 1113194.9079327357, 6800125.454397307, 0 )
-                (Geodesy.convert Geodesy.Geographic (Geodesy.Projected Geodesy.webMercator) Geodesy.wgs84 ( 10, 52, 0 ))
+                (Geodesy.convert Geodesy.Geographic (Geodesy.Projected Geodesy.webMercator) Geodesy.wgs84.spheroid ( 10, 52, 0 ))
         )
 
 
@@ -21,7 +21,7 @@ webMercatorToGeographic =
         (\_ ->
             Expect.equal
                 ( 10, 52, 0 )
-                (Geodesy.convert (Geodesy.Projected Geodesy.webMercator) Geodesy.Geographic Geodesy.wgs84 ( 1113194.9079327357, 6800125.454397307, 0 ))
+                (Geodesy.convert (Geodesy.Projected Geodesy.webMercator) Geodesy.Geographic Geodesy.wgs84.spheroid ( 1113194.9079327357, 6800125.454397307, 0 ))
         )
 
 
