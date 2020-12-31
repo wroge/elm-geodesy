@@ -33,6 +33,7 @@ coordinates to any other system.
     Projected East North Height
 
 -}
+import Geodesy exposing (CoordinateSystem(..))
 type alias Coordinate =
     ( Float, Float, Float )
 

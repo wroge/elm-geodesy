@@ -9,9 +9,12 @@ elm install wroge/elm-geodesy
 ### Usage
 
 ```elm
-import Geodesy exposing (convert, Geographic, Projected, webMercator, wgs84)
+import Geodesy
 
-lonlath = convert Geographic (Projected webMercator) wgs84.spheroid ( 10, 52, 0 )
+
+eastNorthHeight : ( Float, Float, Float )
+eastNorthHeight =
+    Geodesy.convert Geodesy.Geographic (Geodesy.Projected Geodesy.webMercator) Geodesy.wgs84.spheroid ( 10, 52, 0 )
 ```
 
 ### Including
