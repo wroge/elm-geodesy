@@ -1,3 +1,5 @@
+[![](https://img.shields.io/badge/elm-package-%231293D8)](https://package.elm-lang.org/packages/wroge/elm-geodesy/2.0.0/)
+
 # elm-geodesy
 
 ```elm-geodesy``` is a coordinate conversion and transformation package for 
