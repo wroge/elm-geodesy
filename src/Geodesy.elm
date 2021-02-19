@@ -1,54 +1,80 @@
 module Geodesy exposing
-    ( CoordinateSystem
-    , Geocentric
-    , Geographic
-    , Geographic2
-    , Projected
-    , Projected2
-    , Projection
-    , Spheroid
-    , convert
-    , geocentric
-    , geographic
-    , normalizeLongitude
-    , projected
-    , transverseMercator
-    , webMercator
+    ( Spheroid, Projection, CoordinateSystem, Geocentric, Geographic, Geographic2, Projected, Projected2
+    , convert, normalizeLongitude
+    , geocentric, geographic, projected, webMercator, transverseMercator
     )
 
+{-| A coordinate conversion library in elm.
 
+
+# Types
+
+@docs Spheroid, Projection, CoordinateSystem, Geocentric, Geographic, Geographic2, Projected, Projected2
+
+
+# Functions
+
+@docs convert, normalizeLongitude
+
+
+# Predefined
+
+@docs geocentric, geographic, projected, webMercator, transverseMercator
+
+-}
+
+
+{-| Spheroid is represented by major Axis (a) and inverse Flattening (fi)
+-}
 type alias Spheroid =
     { a : Float, fi : Float }
 
 
+{-| Geocentric is represented by x, y, and z coordinates.
+-}
 type alias Geocentric =
     { x : Float, y : Float, z : Float }
 
 
+{-| Geographic is represented by longitude, latitude and height coordinates.
+-}
 type alias Geographic =
     { lon : Float, lat : Float, h : Float }
 
 
+{-| Projected is represented by eastern, northern and height coordinates.
+-}
 type alias Projected =
     { east : Float, north : Float, h : Float }
 
 
+{-| CoordinateSystem is represented a conversion to and from Geocentric coordinates.
+-}
 type alias CoordinateSystem x =
     ( Spheroid -> x -> Geocentric, Spheroid -> Geocentric -> x )
 
 
+{-| Geographic2 is represented by longitude and latitude coordinate.
+-}
 type alias Geographic2 =
     { lon : Float, lat : Float }
 
 
+{-| Projected2 is represented by eastern and northern coordinate.
+-}
 type alias Projected2 =
     { east : Float, north : Float }
 
 
+{-| Projection is represented by a projection to and from geographic coordinates.
+-}
 type alias Projection =
     ( Spheroid -> Projected2 -> Geographic2, Spheroid -> Geographic2 -> Projected2 )
 
 
+{-| normalizeLongitude converts longitude coordinate into the range between
+180 and -180 degrees.
+-}
 normalizeLongitude : Float -> Float
 normalizeLongitude lon =
     if lon < 180 && lon >= -180 then
@@ -61,11 +87,16 @@ normalizeLongitude lon =
         normalizeLongitude (lon - 360)
 
 
+{-| convert converts coordinates from one CoordinateSystem to another.
+-}
 convert : CoordinateSystem x -> CoordinateSystem y -> Spheroid -> x -> y
 convert ( toGeocentric, _ ) ( _, fromGeocentric ) s x =
     fromGeocentric s (toGeocentric s x)
 
 
+{-| geographic is a CoordinateSystem that can convert geographic coordinates to
+geocentric and vice versa.
+-}
 geographic : CoordinateSystem Geographic
 geographic =
     let
@@ -96,11 +127,15 @@ geographic =
     )
 
 
+{-| geocentric is a CoordinateSystem that do nothing.
+-}
 geocentric : CoordinateSystem Geocentric
 geocentric =
     ( \_ c -> c, \_ c -> c )
 
 
+{-| projected takes a projection and returns a CoordinateSystem.
+-}
 projected : Projection -> CoordinateSystem Projected
 projected ( toGeographic, fromGeographic ) =
     let
@@ -125,6 +160,9 @@ projected ( toGeographic, fromGeographic ) =
     )
 
 
+{-| webMercator is a Projection that converts web mercator coordinates to
+geographic and vice versa.
+-}
 webMercator : Projection
 webMercator =
     ( \s c ->
@@ -138,6 +176,8 @@ webMercator =
     )
 
 
+{-| TransverseMercator holds the definitions of a transverse mercator coorinate system.
+-}
 type alias TransverseMercator =
     { longitudeOfOrigin : Float
     , latitudeOfOrigin : Float
@@ -147,6 +187,9 @@ type alias TransverseMercator =
     }
 
 
+{-| transverseMercator is a Projection that converts transverse mercator coordinates to
+geographic and vice versa.
+-}
 transverseMercator : TransverseMercator -> Projection
 transverseMercator { longitudeOfOrigin, latitudeOfOrigin, scale, falseEasting, falseNorthing } =
     let

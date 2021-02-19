@@ -3,9 +3,12 @@
     "name": "wroge/elm-geodesy",
     "summary": "Coordinate conversions and transformations",
     "license": "MIT",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "exposed-modules": [
-        "Geodesy"
+        "Geodesy",
+        "Geodesy.WGS84",
+        "Geodesy.ETRS89",
+        "Geodesy.DHDN2001"
     ],
     "elm-version": "0.19.0 <= v < 0.20.0",
     "dependencies": {

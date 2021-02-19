@@ -1,42 +1,57 @@
 module Geodesy.WGS84 exposing
-    ( CoordinateReferenceSystem
-    , Geocentric(..)
-    , Geographic(..)
-    , UTM(..)
-    , WebMercator(..)
-    , Zone(..)
-    , geocentric
-    , geographic
-    , helmert
-    , spheroid
-    , transform
-    , utm
-    , webMercator
+    ( CoordinateReferenceSystem, Geocentric(..), Geographic(..), UTM(..), WebMercator(..), Zone(..)
+    , geocentric, geographic, helmert, spheroid, transform, utm, webMercator
     )
+
+{-| A coordinate transformation library for dhdn2001 coordinate reference systems in elm.
+
+
+# Types
+
+@docs CoordinateReferenceSystem, Geocentric, Geographic, UTM, WebMercator, Zone
+
+
+# Functions
+
+@docs geocentric, geographic, helmert, spheroid, transform, utm, webMercator
+
+-}
 
 import Geodesy
 
 
+{-| CoordinateReferenceSystem represents coordinate reference systems based on wgs84.
+-}
 type alias CoordinateReferenceSystem x =
     ( x -> Geocentric, Geocentric -> x )
 
 
+{-| Geocentric is represented by x, y, and z coordinates.
+-}
 type Geocentric
     = Geocentric Geodesy.Geocentric
 
 
+{-| Geographic is represented by longitude, latitude and height coordinates.
+-}
 type Geographic
     = Geographic Geodesy.Geographic
 
 
+{-| WebMercator is represented by eastern, northern and height coordinates.
+-}
 type WebMercator
     = WebMercator Geodesy.Projected
 
 
+{-| UTM is represented by a zone and eastern, northern and height coordinates.
+-}
 type UTM
     = UTM Zone Geodesy.Projected
 
 
+{-| Zone represents the WGS84 UTM Zones.
+-}
 type Zone
     = Zone01
     | Zone02
@@ -476,16 +491,22 @@ getZone z =
             60
 
 
+{-| spheroid represents WGS84 Spheroid.
+-}
 spheroid : Geodesy.Spheroid
 spheroid =
     { a = 6378137, fi = 298.257223563 }
 
 
+{-| geocentric represents the WGS84 geocentric coordinate reference system.
+-}
 geocentric : CoordinateReferenceSystem Geocentric
 geocentric =
     ( \c -> c, \c -> c )
 
 
+{-| geographic represents the WGS84 geographic coordinate reference system.
+-}
 geographic : CoordinateReferenceSystem Geographic
 geographic =
     let
@@ -503,6 +524,8 @@ geographic =
     )
 
 
+{-| webMercator represents the WGS84 web mercator coordinate reference system.
+-}
 webMercator : CoordinateReferenceSystem WebMercator
 webMercator =
     let
@@ -520,6 +543,8 @@ webMercator =
     )
 
 
+{-| utm represents the WGS84 utm coordinate reference system.
+-}
 utm : CoordinateReferenceSystem UTM
 utm =
     let
@@ -570,11 +595,15 @@ utm =
     )
 
 
+{-| transform transforms coordinates from one coordinate reference system to another.
+-}
 transform : CoordinateReferenceSystem x -> CoordinateReferenceSystem y -> x -> y
 transform ( toWGS84, _ ) ( _, fromWGS84 ) x =
     fromWGS84 (toWGS84 x)
 
 
+{-| Helmert contains the 7 parameters of a helmert transformation.
+-}
 type alias Helmert =
     { tx : Float
     , ty : Float
@@ -586,6 +615,8 @@ type alias Helmert =
     }
 
 
+{-| helmert transforms geocentric coorinates by 7 parameters.
+-}
 helmert : Helmert -> CoordinateReferenceSystem Geodesy.Geocentric
 helmert h =
     ( forward h, inverse h )

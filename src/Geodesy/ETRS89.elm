@@ -1,26 +1,40 @@
 module Geodesy.ETRS89 exposing
-    ( Geographic(..)
-    , UTM(..)
-    , Zone(..)
-    , geocentric
-    , geographic
-    , grs80
-    , toZone
-    , utm
+    ( Geographic(..), UTM(..), Zone(..)
+    , geocentric, geographic, grs80, utm
     )
+
+{-| A coordinate transformation library for dhdn2001 coordinate reference systems in elm.
+
+
+# Types
+
+@docs Geographic, UTM, Zone
+
+
+# Functions
+
+@docs geocentric, geographic, grs80, utm
+
+-}
 
 import Geodesy
 import Geodesy.WGS84 as WGS84
 
 
+{-| Geographic is represented by longitude, latitude and height coordinates.
+-}
 type Geographic
     = Geographic Geodesy.Geographic
 
 
+{-| UTM is represented by a zone and eastern, northern and height coordinates.
+-}
 type UTM
     = UTM Zone Geodesy.Projected
 
 
+{-| Zone represents the ETRS89 UTM Zones.
+-}
 type Zone
     = Zone28
     | Zone29
@@ -117,16 +131,22 @@ getZone z =
             38
 
 
+{-| grs80 represents ETRS89 Spheroid.
+-}
 grs80 : Geodesy.Spheroid
 grs80 =
     { a = 6378137, fi = 298.257222101 }
 
 
+{-| geocentric represents the ETRS89 geocentric coordinate reference system.
+-}
 geocentric : WGS84.CoordinateReferenceSystem WGS84.Geocentric
 geocentric =
     WGS84.geocentric
 
 
+{-| geographic represents the ETRS89 geographic coordinate reference system.
+-}
 geographic : WGS84.CoordinateReferenceSystem Geographic
 geographic =
     let
@@ -144,6 +164,8 @@ geographic =
     )
 
 
+{-| utm represents the ETRS89 utm coordinate reference system.
+-}
 utm : WGS84.CoordinateReferenceSystem UTM
 utm =
     let

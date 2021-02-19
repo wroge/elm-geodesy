@@ -1,29 +1,46 @@
 module Geodesy.DHDN2001 exposing
-    ( GK(..)
-    , Geographic(..)
-    , Zone(..)
-    , bessel
-    , geocentric
-    , geographic
-    , gk
+    ( Geocentric(..), Geographic(..), GK(..), Zone(..)
+    , bessel, geocentric, geographic, gk
     )
+
+{-| A coordinate transformation library for dhdn2001 coordinate reference systems in elm.
+
+
+# Types
+
+@docs Geocentric, Geographic, GK, Zone
+
+
+# Functions
+
+@docs bessel, geocentric, geographic, gk
+
+-}
 
 import Geodesy
 import Geodesy.WGS84 as WGS84
 
 
+{-| Geocentric is represented by x, y, and z coordinates.
+-}
 type Geocentric
     = Geocentric Geodesy.Geocentric
 
 
+{-| Geographic is represented by longitude, latitude and height coordinates.
+-}
 type Geographic
     = Geographic Geodesy.Geographic
 
 
+{-| GK is represented by a zone and northern, eastern and height coordinates.
+-}
 type GK
     = GK Zone Geodesy.Projected
 
 
+{-| Zone represents the three DHDN2001 Zones 3, 4 and 5.
+-}
 type Zone
     = Zone3
     | Zone4
@@ -64,6 +81,8 @@ getZone z =
             5
 
 
+{-| bessel represents Bessel Spheroid.
+-}
 bessel : Geodesy.Spheroid
 bessel =
     { a = 6377397.155
@@ -71,6 +90,8 @@ bessel =
     }
 
 
+{-| geocentric represents the DHDN2001 geocentric coordinate reference system.
+-}
 geocentric : WGS84.CoordinateReferenceSystem Geocentric
 geocentric =
     let
@@ -94,6 +115,8 @@ geocentric =
     )
 
 
+{-| geographic represents the DHDN2001 geographic coordinate reference system.
+-}
 geographic : WGS84.CoordinateReferenceSystem Geographic
 geographic =
     let
@@ -114,6 +137,8 @@ geographic =
     )
 
 
+{-| gk represents the DHDN2001 gauss kruger coordinate reference system.
+-}
 gk : WGS84.CoordinateReferenceSystem GK
 gk =
     let
